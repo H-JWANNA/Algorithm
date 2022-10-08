@@ -10,6 +10,8 @@ public class Main_1074 {
         int n = Integer.parseInt(st.nextToken());
         int y = Integer.parseInt(st.nextToken());
         int x = Integer.parseInt(st.nextToken());
+
+        // 결과값을 저장할 변수
         int result = 0;
 
         // 재귀
@@ -27,8 +29,10 @@ public class Main_1074 {
         if (n == 0) return result;
 
         // 해당 (x, y) 좌표의 사분면 구하고, (x, y) 좌표 수정하기
-        int quadrant;
+        // 구역을 구분하는 기준 half = 2^(n-1)
         int half = (int) Math.pow(2, n-1);
+        int quadrant;
+
         if(x >= half && y >= half) {
             quadrant = 3;
             x -= half;
@@ -44,7 +48,7 @@ public class Main_1074 {
         }
         else quadrant = 0;
 
-        // 사분면에 따라 result 값 추가하기
+        // 사분면에 따라 result 값 추가하기 [ 4^(n-1) * (0~3) ]
         int initNum = (int) Math.pow(4, n-1);
         result += (initNum * quadrant);
 
