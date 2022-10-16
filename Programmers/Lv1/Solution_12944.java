@@ -1,6 +1,6 @@
 package Lv1;
 
-class Solution {
+class Solution_12944 {
     public double solution(int[] arr) {
         double answer = 0;
 
