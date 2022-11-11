@@ -4,8 +4,14 @@ public class Daily_35 {
     static int[] result;
 
     public static void main(String[] args) {
+        int[] arr1 = {5, 4, 3, 2, 1};
+        int[] arr2 = {13, 21, 423, 1000, 121, 1, -10, 24};
+        int[] arr3 = {221, -110, -11, 12, 229, 84, 120, 8, 2};
+
         Daily_35 daily35 = new Daily_35();
-        System.out.println(Arrays.toString(daily35.quickSort(new int[] {5, 4, 3, 2, 1})));
+        System.out.println(Arrays.toString(daily35.quickSort(arr1)));
+        System.out.println(Arrays.toString(daily35.quickSort(arr2)));
+        System.out.println(Arrays.toString(daily35.quickSort(arr3)));
     }
 
     public int[] quickSort(int[] arr) {
