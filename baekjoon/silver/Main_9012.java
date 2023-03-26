@@ -3,8 +3,7 @@ package silver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Stack;
 
 public class Main_9012 {
 	public static void main(String[] args) throws IOException {
@@ -19,28 +18,27 @@ public class Main_9012 {
 	}
 
 	private static boolean isVps(String ps) {
-		Deque<String> q = new ArrayDeque<>();
+		Stack<String> s = new Stack<>();
 
 		for (int i = 0; i < ps.length(); i++) {
 			char c = ps.charAt(i);
 
-			if (c == '(') {
-				q.add("(");
-			}
+			switch (c) {
+				case '(':
+					s.add("(");
+					break;
 
-			if (c == ')') {
-				if (q.isEmpty()) {
-					return false;
-				}
+				case ')':
+					if (s.isEmpty()) {
+						return false;
+					}
 
-				if (!q.peekLast().equals("(")) {
-					return false;
-				}
-
-				q.poll();
+					if (!s.pop().equals("(")) {
+						return false;
+					}
 			}
 		}
 
-		return q.isEmpty();
+		return s.isEmpty();
 	}
 }
