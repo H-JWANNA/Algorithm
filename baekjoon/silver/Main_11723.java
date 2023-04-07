@@ -1,54 +1,51 @@
 package silver;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main_11723 {
-    public static void main(String[] args) throws IOException {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int num = Integer.parseInt(input.readLine());
+	public static void main(String[] args) throws IOException {
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int num = Integer.parseInt(input.readLine());
 
-        // 공집합 S 생성
-        int[] s = new int[21];
+		// 공집합 S 생성
+		boolean[] s = new boolean[21];
 
-        for (int i = 0; i < num; i++) {
-            StringTokenizer st = new StringTokenizer(input.readLine());
-            String method = st.nextToken();
+		for (int i = 0; i < num; i++) {
+			StringTokenizer st = new StringTokenizer(input.readLine());
 
-            switch (method) {
-                case "add":
-                    s[Integer.parseInt(st.nextToken())] = 1;
-                    break;
-                case "remove":
-                    s[Integer.parseInt(st.nextToken())] = 0;
-                    break;
-                case "check":
-                    if(s[Integer.parseInt(st.nextToken())] == 1) {
-                        bw.write("1");
-                        bw.newLine();
-                    }
-                    else {
-                        bw.write("0");
-                        bw.newLine();
-                    }
-                    break;
-                case "toggle":
-                    int toggleNum = Integer.parseInt(st.nextToken());
-                    s[toggleNum] = s[toggleNum] == 1 ? 0 : 1;
-                    break;
-                case "all":
-                    for (int j = 1; j < s.length; j++) {
-                        s[j] = 1;
-                    }
-                    break;
-                case "empty":
-                    s = new int[21];
-                    break;
-            }
-        }
-        input.close();
-        bw.flush();
-        bw.close();
-    }
+			switch (st.nextToken()) {
+				case "add":
+					s[parseInt(st.nextToken())] = true;
+					break;
+				case "remove":
+					s[parseInt(st.nextToken())] = false;
+					break;
+				case "check":
+					sb.append(s[parseInt(st.nextToken())] ? 1 : 0).append("\n");
+					break;
+				case "toggle":
+					int toggleNum = parseInt(st.nextToken());
+					s[toggleNum] = !s[toggleNum];
+					break;
+				case "all":
+					Arrays.fill(s, true);
+					break;
+				case "empty":
+					Arrays.fill(s, false);
+					break;
+			}
+		}
+		input.close();
+
+		System.out.println(sb);
+	}
+
+	private static int parseInt(String token) {
+		return Integer.parseInt(token);
+	}
 }
