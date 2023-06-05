@@ -3,6 +3,7 @@ package silver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main_1080 {
@@ -47,18 +48,12 @@ public class Main_1080 {
 			}
 		}
 
-		// 끝까지 탐색했을 때, before, after 가 다르다면 -1을 출력
-		for (int y = 0; y < n; y++) {
-			for (int x = 0; x < m; x++) {
-				if (before[y][x] != after[y][x]) {
-					System.out.println(-1);
-					System.exit(0);
-				}
-			}
+		// 배열이 서로 같다면 count, 다르다면 -1 출력
+		if (Arrays.deepEquals(before, after)) {
+			System.out.println(count);
+		} else {
+			System.out.println(-1);
 		}
-
-		// 모두 같다면 count 출력
-		System.out.println(count);
 	}
 
 	private static void reverse(int y, int x) {
