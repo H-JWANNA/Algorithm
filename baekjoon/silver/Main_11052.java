@@ -27,13 +27,8 @@ public class Main_11052 {
 			따라서 (n - n / 2)번째까지 비교를 하며 최대가 되는 가격을 구한다.
 		 */
 
-		// dp 초기값
-		if (n > 1) {
-			cards[2] = Math.max(cards[1] * 2, cards[2]);
-		}
-
 		// Bottom-up
-		for (int i = 3; i < cards.length; i++) {
+		for (int i = 2; i < cards.length; i++) {
 			cards[i] = getMax(i);
 		}
 
