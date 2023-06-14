@@ -16,11 +16,20 @@ public class Main_1697 {
 
 		int n = Integer.parseInt(st.nextToken());
 		int k = Integer.parseInt(st.nextToken());
+		int answer;
 
-		System.out.println(bfs(n, k));
+		// 만약 동생이 더 뒤에 있다면 -1로만 갈 수 있다.
+		if (n >= k) {
+			answer = n - k;
+		} else {
+			answer = bfs(n, k);
+		}
+
+		System.out.println(answer);
 	}
 
 	private static int bfs(int n, int k) {
+		// 현재 위치와 몇 번 움직였는지를 담는 배열
 		int[] arr = new int[] {n, 0};
 
 		Queue<int[]> q = new ArrayDeque<>();
