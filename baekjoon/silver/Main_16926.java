@@ -3,7 +3,6 @@ package silver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main_16926 {
@@ -35,58 +34,50 @@ public class Main_16926 {
 
 		shift(Math.min(N, M) / 2);
 
-		System.out.println(Arrays.deepToString(arr));
+		// System.out.println(Arrays.deepToString(arr));
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				sb.append(arr[i][j]).append(" ");
+			}
+			sb.append("\n");
+		}
+
+		System.out.print(sb);
 	}
 
 	private static void shift(int num) {
-		int point = 0;
-
-		while (num-- > 0) {
+		for (int point = 0; point < num; point++) {
 			turn(point);
-			point++;
 		}
 	}
 
 	private static void turn(int point) {
 		int x = arr[0].length - 1 - point;
 		int y = arr.length - 1 - point;
-		int numbers = x * 2 + y * 2 + 2;
+		int numbers = (x + y - point * 2) * 2;
 
 		for (int r = 0; r < R % numbers; r++) {
-			int[][] turnedArr = copy(arr);
-
-			for (int i = point; i <= y; i++) {
-				for (int j = point; j <= x; j++) {
-					// 상
-					if (i == point && j > point) {
-						turnedArr[i][j - 1] = arr[i][j];
-					}
-					// 좌
-					else if (j == point && i < y) {
-						turnedArr[i + 1][j] = arr[i][j];
-					}
-					// 하
-					else if (i == y && j < x) {
-						turnedArr[i][j + 1] = arr[i][j];
-					}
-					// 우
-					else if (j == x && i > point) {
-						turnedArr[i - 1][j] = arr[i][j];
-					}
-				}
+			int temp = arr[point][point];
+			// 상
+			for (int j = point; j < x; j++) {
+				arr[point][j] = arr[point][j + 1];
 			}
-
-			arr = turnedArr;
+			// 우
+			for (int i = point; i < y; i++) {
+				arr[i][x] = arr[i + 1][x];
+			}
+			// 하
+			for (int j = x; j > point; j--) {
+				arr[y][j] = arr[y][j - 1];
+			}
+			// 좌
+			for (int i = y; i > point; i--) {
+				arr[i][point] = arr[i - 1][point];
+			}
+			arr[point + 1][point] = temp;
 		}
-	}
-
-	public static int[][] copy(int[][] src) {
-		if (src == null) {
-			return null;
-		}
-
-		return Arrays.stream(src)
-			.map(int[]::clone)
-			.toArray(int[][]::new);
 	}
 }
