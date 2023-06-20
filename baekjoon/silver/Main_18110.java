@@ -19,7 +19,7 @@ public class Main_18110 {
 		Arrays.sort(opinions);
 
 		// 절사 평균
-		int cut = (int) Math.round((n + 1) * 0.15);
+		int cut = (int) Math.round(n * 0.15);
 
 		// 총합
 		double sum = 0;
