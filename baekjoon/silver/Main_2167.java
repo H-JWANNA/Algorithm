@@ -1,0 +1,49 @@
+package silver;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main_2167 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		st = new StringTokenizer(br.readLine());
+		int n = Integer.parseInt(st.nextToken());
+		int m = Integer.parseInt(st.nextToken());
+
+		int[][] arr = new int[n][m];
+		for (int i = 0; i < n; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < m; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+
+		int k = Integer.parseInt(br.readLine());
+		int[] answer = new int[k];
+
+		for(int l = 0; l < k; l++) {
+			st = new StringTokenizer(br.readLine());
+
+			int i = Integer.parseInt(st.nextToken()) - 1;
+			int j = Integer.parseInt(st.nextToken()) - 1;
+			int x = Integer.parseInt(st.nextToken());
+			int y = Integer.parseInt(st.nextToken());
+
+			for (int row = i; row < x; row++) {
+				for (int col = j; col < y; col++) {
+					answer[l] += arr[row][col];
+				}
+			}
+		}
+
+		StringBuilder sb = new StringBuilder();
+		for (int i : answer) {
+			sb.append(i).append("\n");
+		}
+
+		System.out.print(sb);
+	}
+}
