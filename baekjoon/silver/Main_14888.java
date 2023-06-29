@@ -37,13 +37,13 @@ public class Main_14888 {
 			2. 각 연산 단계는 수열의 순서에 대해 노드를 두고 + - * / 를 탐색함
 		 */
 
-		search(arr[0]);
+		operation(arr[0]);
 
 		System.out.println(max);
 		System.out.println(min);
 	}
 
-	private static void search(int value) {
+	private static void operation(int value) {
 		// int[] : {덧셈, 뺄셈, 곱셈, 나눗셈, 이전 까지의 합, 현재 노드}
 		Queue<int[]> q = new ArrayDeque<>();
 		q.add(new int[] {0, 0, 0, 0, value, 1});
