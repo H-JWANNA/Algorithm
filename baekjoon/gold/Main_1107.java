@@ -3,8 +3,6 @@ package gold;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main_1107 {
@@ -18,11 +16,12 @@ public class Main_1107 {
 			st = new StringTokenizer(br.readLine(), " ");
 		}
 
-		Set<Integer> broken = new HashSet<>();
+		boolean[] broken = new boolean[10];
 
 		while (m-- > 0) {
 			int button = Integer.parseInt(st.nextToken());
-			broken.add(button);
+
+			broken[button] = true;
 		}
 
 		int min = Math.abs(100 - channel);
@@ -37,7 +36,7 @@ public class Main_1107 {
 				int button = buttons.charAt(l) - '0';
 
 				// 고장난 버튼이라면 갈 수 없다.
-				if (broken.contains(button)) {
+				if (broken[button]) {
 					isBroken = true;
 					break;
 				}
