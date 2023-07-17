@@ -3,7 +3,6 @@ package gold;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main_1107 {
@@ -31,12 +30,11 @@ public class Main_1107 {
 		for (int i = 0; i <= 999999; i++) {
 			boolean isBroken = false;
 
-			int[] buttons = Arrays.stream(Integer.toString(i).split(""))
-				.map(Integer::parseInt)
-				.mapToInt(button -> button)
-				.toArray();
+			String buttons = Integer.toString(i);
 
-			for (int button : buttons) {
+			for (int l = 0; l < buttons.length(); l++) {
+				int button = buttons.charAt(l) - '0';
+
 				// 고장난 버튼이라면 갈 수 없다.
 				if (broken[button]) {
 					isBroken = true;
@@ -49,7 +47,7 @@ public class Main_1107 {
 			}
 
 			//  count = ( +,-를 눌러야 하는 횟수 ) + ( 리모컨 숫자를 누른 횟수 )
-			int count = Math.abs(channel - i) + buttons.length;
+			int count = Math.abs(channel - i) + buttons.length();
 			min = Math.min(min, count);
 		}
 
