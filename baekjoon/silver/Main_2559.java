@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /*
-	메모리 : 23772KB
-	시간 : 1936ms
+	메모리 : 23688KB
+	시간 : 292ms
  */
 
 public class Main_2559 {
@@ -27,25 +27,20 @@ public class Main_2559 {
 			temps[i] = Integer.parseInt(st.nextToken());
 		}
 
-		int max = Integer.MIN_VALUE;
+		int sum = 0;
+		for (int i = 0; i < k; i++) {
+			sum += temps[i];
+		}
 
-		for (int i = 0; i <= n - k; i++) {
-			int sum = getSum(i, k);
+		int max = sum;
+
+		for (int i = 0; i < n - k; i++) {
+			sum -= temps[i];
+			sum += temps[i + k];
 
 			max = Math.max(max, sum);
 		}
 
 		System.out.println(max);
-	}
-
-	private static int getSum(int start, int date) {
-		int sum = 0;
-
-		while (date-- > 0) {
-			sum += temps[start];
-			start++;
-		}
-
-		return sum;
 	}
 }
