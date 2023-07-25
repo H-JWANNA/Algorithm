@@ -43,20 +43,17 @@ public class Main_1976 {
 		}
 
 		st = new StringTokenizer(br.readLine());
-		boolean canTrip = true;
-
 		int city = Integer.parseInt(st.nextToken());
 
-		while (st.hasMoreTokens()) {
+		while (--m > 0) {
 			int cur = Integer.parseInt(st.nextToken());
 
 			if (parents[city] != parents[cur]) {
-				canTrip = false;
 				break;
 			}
 		}
 
-		System.out.println(canTrip ? "YES" : "NO");
+		System.out.println(m == 0 ? "YES" : "NO");
 	}
 
 	private static void change(int x, int y) {
