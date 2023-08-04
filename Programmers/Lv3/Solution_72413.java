@@ -1,15 +1,15 @@
 package Lv3;
 
 /*
-	정확성: 45.0
-	효율성: 40.0
-	합계: 85.0 / 100.0금
+	정확성: 50.0
+	효율성: 50.0
+	합계: 100.0 / 100.0
 
-	=> 실패
+	=> 통과
  */
 
 public class Solution_72413 {
-	static int MAX_FARE = 100_001;
+	static int MAX_FARE = 10_000_001;
 
 	/**
 	 *
@@ -21,67 +21,35 @@ public class Solution_72413 {
 	 * @return : A와 B가 합승해서 집에가는 최소 비용
 	 */
 	public int solution(int n, int s, int a, int b, int[][] fares) {
-		int[][] minFares = fw(n, fares);
-
-		int minFare = Integer.MAX_VALUE;
-
-		// 시작점에서 A, B로 가는 경유지별 최소 금액을 계산한다.
-		for (int t = 1; t <= n; t++) {
-			int st = minFares[s][t];
-			int ta = minFares[t][a];
-			int tb = minFares[t][b];
-
-			minFare = Math.min(minFare, st + ta + tb);
-		}
-
-		return minFare;
-	}
-
-	public int[][] fw(int n, int[][] fares) {
-		int[][] adjList = makeAdjList(n, fares);
-
-		for (int t = 1; t <= n; t++) {
-			for (int i = 1; i <= n; i++) {
-				for (int j = 1; j <= n; j++) {
-					if (i == j) {
-						continue;
-					}
-
-					int ij = adjList[i][j];
-					int it = adjList[i][t];
-					int tj = adjList[t][j];
-
-					adjList[i][j] = Math.min(ij, it + tj);
-				}
-			}
-		}
-
-		return adjList;
-	}
-
-	public int[][] makeAdjList(int n, int[][] fares) {
-		int[][] adjList = new int[n + 1][n + 1];
+		int[][] graph = new int[n + 1][n + 1];
 
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= n; j++) {
-				if (i == j) {
-					continue;
-				}
-
-				adjList[i][j] = MAX_FARE;
+				graph[i][j] = (i == j) ? 0 : MAX_FARE;
 			}
 		}
 
 		for (int[] fare : fares) {
-			int a = fare[0];
-			int b = fare[1];
-			int f = fare[2];
-
-			adjList[a][b] = f;
-			adjList[b][a] = f;
+			graph[fare[0]][fare[1]] = fare[2];
+			graph[fare[1]][fare[0]] = fare[2];
 		}
 
-		return adjList;
+		for (int t = 1; t <= n; t++) {
+			for (int i = 1; i <= n; i++) {
+				for (int j = 1; j <= n; j++) {
+					graph[i][j] = Math.min(graph[i][j], graph[i][t] + graph[t][j]);
+				}
+			}
+		}
+
+		int min = MAX_FARE * n;
+
+		// 시작점에서 A, B로 가는 경유지별 최소 금액을 계산한다.
+		for (int t = 1; t <= n; t++) {
+			min = Math.min(min, graph[s][t] + graph[t][a] + graph[t][b]);
+		}
+
+		return min;
 	}
 
 	public static void main(String[] args) {
