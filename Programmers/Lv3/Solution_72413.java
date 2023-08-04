@@ -5,14 +5,13 @@ package Lv3;
 	효율성: 50.0
 	합계: 100.0 / 100.0
 
-	=> 통과
+	=> 통과 (메서드 분리는 상관 없고, MAX_FARE 값에 따라 오버플로우가 발생해서 실패하는 듯)
  */
 
 public class Solution_72413 {
 	static int MAX_FARE = 10_000_001;
 
 	/**
-	 *
 	 * @param n : 지점의 개수
 	 * @param s : 시작점
 	 * @param a : A 집
@@ -21,35 +20,59 @@ public class Solution_72413 {
 	 * @return : A와 B가 합승해서 집에가는 최소 비용
 	 */
 	public int solution(int n, int s, int a, int b, int[][] fares) {
-		int[][] graph = new int[n + 1][n + 1];
+		int[][] minFares = fw(n, fares);
 
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				graph[i][j] = (i == j) ? 0 : MAX_FARE;
-			}
+		int minFare = MAX_FARE * n;
+
+		// 시작점에서 A, B로 가는 경유지별 최소 금액을 계산한다.
+		for (int t = 1; t <= n; t++) {
+			int st = minFares[s][t];
+			int ta = minFares[t][a];
+			int tb = minFares[t][b];
+
+			minFare = Math.min(minFare, st + ta + tb);
 		}
 
-		for (int[] fare : fares) {
-			graph[fare[0]][fare[1]] = fare[2];
-			graph[fare[1]][fare[0]] = fare[2];
-		}
+		return minFare;
+	}
+
+	public int[][] fw(int n, int[][] fares) {
+		int[][] adjList = makeAdjList(n, fares);
 
 		for (int t = 1; t <= n; t++) {
 			for (int i = 1; i <= n; i++) {
 				for (int j = 1; j <= n; j++) {
-					graph[i][j] = Math.min(graph[i][j], graph[i][t] + graph[t][j]);
+					if (i == j) {
+						continue;
+					}
+
+					int ij = adjList[i][j];
+					int it = adjList[i][t];
+					int tj = adjList[t][j];
+
+					adjList[i][j] = Math.min(ij, it + tj);
 				}
 			}
 		}
 
-		int min = MAX_FARE * n;
+		return adjList;
+	}
 
-		// 시작점에서 A, B로 가는 경유지별 최소 금액을 계산한다.
-		for (int t = 1; t <= n; t++) {
-			min = Math.min(min, graph[s][t] + graph[t][a] + graph[t][b]);
+	public int[][] makeAdjList(int n, int[][] fares) {
+		int[][] adjList = new int[n + 1][n + 1];
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				adjList[i][j] = (i == j) ? 0 : MAX_FARE;
+			}
 		}
 
-		return min;
+		for (int[] fare : fares) {
+			adjList[fare[0]][fare[1]] = fare[2];
+			adjList[fare[1]][fare[0]] = fare[2];
+		}
+
+		return adjList;
 	}
 
 	public static void main(String[] args) {
