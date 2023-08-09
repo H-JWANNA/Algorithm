@@ -3,14 +3,16 @@ package gold;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /*
-	실패 : NPE
-	-> tree를 초기화하는 과정에서 상위 노드부터 차례대로 입력받는 것이 아닌 중간 노드가 먼저 입력되는 듯?
+	메모리 : 46380 KB
+	시간 : 3384 ms
  */
 
 public class Main_11437 {
+	static ArrayList<Integer>[] input;
 	static Node[] tree;
 
 	public static void main(String[] args) throws IOException {
@@ -19,23 +21,24 @@ public class Main_11437 {
 		StringBuilder sb = new StringBuilder();
 
 		int n = Integer.parseInt(br.readLine());
+		input = new ArrayList[n + 1];
 		tree = new Node[n + 1];
 
-		tree[1] = new Node(0, 0);
+		for (int i = 0; i <= n; i++) {
+			input[i] = new ArrayList<>();
+			tree[i] = new Node(0, 0);
+		}
 
 		for (int i = 1; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 
-			if (tree[a] == null) {
-				tree[a] = new Node(tree[b].depth + 1, b);
-			}
-
-			if (tree[b] == null) {
-				tree[b] = new Node(tree[a].depth + 1, a);
-			}
+			input[a].add(b);
+			input[b].add(a);
 		}
+
+		makeTree(1);
 
 		int m = Integer.parseInt(br.readLine());
 		while (m-- > 0) {
@@ -47,6 +50,19 @@ public class Main_11437 {
 		}
 
 		System.out.print(sb);
+	}
+
+	private static void makeTree(int node) {
+		for (Integer i : input[node]) {
+			if (i == tree[node].parent) {
+				continue;
+			}
+
+			tree[i].parent = node;
+			tree[i].depth = tree[node].depth + 1;
+
+			makeTree(i);
+		}
 	}
 
 	private static int lca(int a, int b) {
