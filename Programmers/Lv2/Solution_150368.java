@@ -1,7 +1,7 @@
 package Lv2;
 
 import java.util.Arrays;
-
+/*
 public class Solution_150368 {
 	static final int[] DISCOUNT_RATES = new int[] {10, 20, 30, 40};
 	static int[] answer;
@@ -86,76 +86,80 @@ public class Solution_150368 {
 		System.out.println(Arrays.toString(sol2));
 	}
 }
+*/
 
-/*
-class Solution {
-	static int[] discounts = new int[] {10, 20, 30, 40};
+public class Solution_150368 {
+	static final int[] DISCOUNT_RATES = new int[] {10, 20, 30, 40};
 	static int[] answer;
 
 	public int[] solution(int[][] users, int[] emoticons) {
-		// 완전 탐색 (재귀 or While로 풀어야 될 거 같은데)
-
 		answer = new int[2];
 
-		int[] usersPrice = new int[users.length];
-
-		buy(users, emoticons, 0, usersPrice);
+		buy(users, emoticons, 0, new int[users.length]);
 
 		return answer;
 	}
 
 	public void buy(int[][] users, int[] emoticons, int depth, int[] usersPrice) {
 		if (depth == emoticons.length) {
-			int[] curAnswer = calcMaxUser(usersPrice);
-
-			if (answer[0] < curAnswer[0]) {
-				answer = curAnswer;
-			} else if (answer[0] == curAnswer[0]) {
-				if (answer[1] < curAnswer[1]) {
-					answer = curAnswer;
-				}
-			}
-
+			int[] curAnswer = getAnswer(users, usersPrice);
+			setAnswer(curAnswer);
 			return;
 		}
 
-		for (int d = 0; d < discounts.length; d++) {
-			int price = emoticons[depth] * discounts[d] / 100;
+		for (int rate : DISCOUNT_RATES) {
+			int price = emoticons[depth] * (100 - rate) / 100;
+			int[] curUsersPrice = Arrays.copyOf(usersPrice, usersPrice.length);
 
 			for (int i = 0; i < users.length; i++) {
-				if (usersPrice[i] == -1) {
-					continue;
-				}
-
 				int[] user = users[i];
 
-				if (discounts[d] >= user[0]) {
-					usersPrice[i] += price;
-				}
-
-				if (usersPrice[i] >= user[1]) {
-					usersPrice[i] = -1;
+				if (rate >= user[0]) {
+					curUsersPrice[i] += price;
 				}
 			}
 
-			buy(users, emoticons, depth+1, usersPrice);
+			System.out.println("depth: " + depth);
+			System.out.println("rate = " + rate);
+			System.out.println(Arrays.toString(curUsersPrice));
+			buy(users, emoticons, depth + 1, curUsersPrice);
 		}
 	}
 
-	public int[] calcMaxUser(int[] usersPrice) {
-		int cnt = 0;
+	public int[] getAnswer(int[][] users, int[] usersPrice) {
+		int plus = 0;
 		int benefit = 0;
 
-		for (int price : usersPrice) {
-			if (price == -1) {
-				cnt++;
-				continue;
+		for (int i = 0; i < usersPrice.length; i++) {
+			if (usersPrice[i] >= users[i][1]) {
+				plus++;
+			} else {
+				benefit += usersPrice[i];
 			}
-
-			benefit += price;
 		}
 
-		return new int[] {cnt, benefit};
+		return new int[] {plus, benefit};
+	}
+
+	public void setAnswer(int[] arr) {
+		if (answer[0] < arr[0]) {
+			answer = arr;
+		} else if (answer[0] == arr[0] && answer[1] < arr[1]) {
+			answer = arr;
+		}
+	}
+
+	public static void main(String[] args) {
+		Solution_150368 sol = new Solution_150368();
+
+		int[] sol1 = sol.solution(
+			new int[][] {{40, 10000}, {25, 10000}},
+			new int[] {7000, 9000});
+		int[] sol2 = sol.solution(
+			new int[][] {{40, 2900}, {23, 10000}, {11, 5200}, {5, 5900}, {40, 3100}, {27, 9200}, {32, 6900}},
+			new int[] {1300, 1500, 1600, 4900});
+
+		System.out.println(Arrays.toString(sol1));
+		System.out.println(Arrays.toString(sol2));
 	}
 }
- */
