@@ -2,25 +2,24 @@ package Lv3;
 
 public class Solution_43162 {
 	static int[] parents;
+	static boolean[] isCounted;
 
 	public int solution(int n, int[][] computers) {
 		parents = new int[n];
+		isCounted = new boolean[n];
 
 		for(int i = 0; i < n; i++) {
 			parents[i] = i;
 		}
 
-		for(int i = 0; i < n * 2; i++) {
-			for(int j = 0; j < n * 2; j++) {
-				int ii = i % n;
-				int jj = j % n;
-
-				if (computers[ii][jj] == 0) {
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if (computers[i][j] == 0) {
 					continue;
 				}
 
-				int x = find(ii);
-				int y = find(jj);
+				int x = find(i);
+				int y = find(j);
 
 				if (x != y) {
 					change(x, y);
@@ -31,11 +30,11 @@ public class Solution_43162 {
 		int answer = 0;
 
 		for(int i = 0; i < n; i++) {
-			if (parents[i] == -1 || parents[parents[i]] == -1) {
+			if (isCounted[find(parents[i])]) {
 				continue;
 			}
 
-			parents[i] = -1;
+			isCounted[i] = true;
 			answer++;
 		}
 
